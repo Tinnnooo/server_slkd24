@@ -9,7 +9,7 @@ trait HasUploadImage
 {
     public function saveImage(UploadedFile|null $image, string $folderName)
     {
-        $imageName = $image->hashName() . '.' . $image->getClientOriginalExtension();
+        $imageName = $image->hashName();
         $image->storeAs('public/' . $folderName, $imageName);
 
         return $folderName . '/' . $imageName;

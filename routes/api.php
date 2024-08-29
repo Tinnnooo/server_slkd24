@@ -18,6 +18,6 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
     Route::get('/get-comments/{id}', [BlogController::class, 'getComments']);
 });
 
-Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
+Route::middleware(['json', 'auth:sanctum', 'admin'])->prefix('v1')->group(function () {
     Route::post('/blog', [BlogController::class, 'create']);
 });

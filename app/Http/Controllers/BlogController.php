@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\HasResponseHttp;
 use App\Http\Requests\CreateBlogRequest;
 use App\Http\Resources\BlogCommentCollection;
+use App\Http\Resources\BlogResource;
 use App\Services\BlogService;
 use Illuminate\Http\Request;
 
@@ -29,5 +30,7 @@ class BlogController extends Controller
         $validated = $request->validated();
 
         $data = $this->blogService->store($validated);
+
+        return $this->success(['data' => new BlogResource($data)]);
     }
 }

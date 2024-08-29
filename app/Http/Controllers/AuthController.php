@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ServerBusyException;
 use App\HasResponseHttp;
+use App\HasToken;
 use App\HasUploadImage;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    use HasResponseHttp, HasUploadImage;
+    use HasResponseHttp, HasUploadImage, HasToken;
 
     public function register(RegistrationRequest $request)
     {
@@ -49,10 +50,9 @@ class AuthController extends Controller
             throw new ServerBusyException();
         }
 
-        $user['token'] = $user->createToken('access_token')->plainTextToken;
         Auth::login($user);
 
-        return $this->success(['message' => 'User create success.', 'data' => new UserResource($user)], 201);
+        return $this->success(['message' => 'User create success.', 'data' => new UserResource($user), 'token' => $this->token($user)], 201);
     }
 
     public function login(LoginRequest $request)
@@ -63,6 +63,6 @@ class AuthController extends Controller
             return $this->failedLogin();
         }
 
-        return $this->success(['message' => 'Login success.', 'token' => Auth::user()->createToken('access_token')->plainTextToken]);
+        return $this->success(['message' => 'Login success.', 'token' => $this->token(Auth::user())]);
     }
 }
