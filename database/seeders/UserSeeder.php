@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
             'profile_picture' => '',
         ]);
 
+
         $role = Role::find(1);
         $user->roles()->attach($role);
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\HasResponseHttp;
+use App\HasUploadImage;
+use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    use HasResponseHttp;
+    use HasResponseHttp, HasUploadImage;
 
     protected $userService;
 
@@ -24,9 +26,9 @@ class UserController extends Controller
         if ($request->hasFile('profile_picture')) {
             $user = Auth::user();
 
-            $this->userService->deleteExistFile($user);
+            $this->deleteImage($user);
 
-            $newProfilePath = $this->userService->storeProfile($request->file('profile_picture'));
+            $newProfilePath = $this->saveImage($request->file('profile_picture'), 'user_profiles');
 
             $user->profile_picture = $newProfilePath;
             $user->save();
@@ -35,15 +37,9 @@ class UserController extends Controller
         return $this->success(['message' => 'Updated profile successfully.']);
     }
 
-    public function getProfile()
+    public function me()
     {
-        $user = Auth::user();
-        $profilePicturePath = $user->profile_picture;
 
-        if (!Storage::disk('public')->exists($profilePicturePath)) {
-            return $this->notFound();
-        }
-
-        return response()->file(Storage::disk('public')->path($profilePicturePath));
+        return $this->success([new UserResource(Auth::user())]);
     }
 }

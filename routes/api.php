@@ -14,6 +14,10 @@ Route::prefix('v1')->group(function () {
 
 Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
-    Route::get('/get-profile', [UserController::class, 'getProfile']);
+    Route::get('/me', [UserController::class, 'me']);
     Route::get('/get-comments/{id}', [BlogController::class, 'getComments']);
+});
+
+Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
+    Route::post('/blog', [BlogController::class, 'create']);
 });

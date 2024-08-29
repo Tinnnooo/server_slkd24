@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ServerBusyException;
 use App\HasResponseHttp;
+use App\HasUploadImage;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\UserResource;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    use HasResponseHttp;
+    use HasResponseHttp, HasUploadImage;
 
     public function register(RegistrationRequest $request)
     {
@@ -25,10 +26,7 @@ class AuthController extends Controller
 
         $profile_picture = $validated['profile_picture'];
 
-        $imageName = time() . '_' . $profile_picture->getClientOriginalName();
-        $profile_picture->storeAs('public/user_profiles', $imageName);
-
-        $imagePath = 'user_profiles/' . $imageName;
+        $imagePath = $this->saveImage($profile_picture, 'user_profiles');
 
         DB::beginTransaction();
         try {
@@ -48,7 +46,7 @@ class AuthController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return new ServerBusyException();
+            throw new ServerBusyException();
         }
 
         $user['token'] = $user->createToken('access_token')->plainTextToken;
