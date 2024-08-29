@@ -23,7 +23,9 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
     Route::put('/comment/{id}', [BlogController::class, 'updateComment']);
     Route::delete('/comment/{id}', [BlogController::class, 'deleteComment']);
 
-    Route::get('/captcha', [CaptchaController::class, 'generateCaptcha']);
+    Route::get('/captcha/requestToken', [CaptchaController::class, 'requestToken']);
+    Route::get('/captcha/{token}', [CaptchaController::class, 'generate']);
+    Route::post('/captcha/verify', [CaptchaController::class, 'validate']);
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {

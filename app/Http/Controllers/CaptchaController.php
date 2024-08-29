@@ -2,47 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
+use App\HasResponseHttp;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class CaptchaController extends Controller
 {
-    public function generateCaptcha()
+    use HasResponseHttp;
+
+    public function requestToken()
     {
-        $captchaText = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, 6);
+        $uuid = Str::uuid()->toString();
+        $explodedUuid = explode('-', $uuid);
+        $captchaText = substr($explodedUuid[4], -4);
 
-        Session::put('captcha', $captchaText);
+        Cache::put($explodedUuid[0], $captchaText);
 
-        $image = imagecreatetruecolor(120, 40);
+        return $this->success(['token' => $explodedUuid[0]]);
+    }
+
+    public function generate(string $token)
+    {
+        $captcha = Cache::get($token);
+
+        if (!$captcha) throw new NotFoundException();
+
+        $image = imagecreatetruecolor(90, 40);
         $bgColor = imagecolorallocate($image, 240, 240, 240);
         $textColor = imagecolorallocate($image, 50, 50, 50);
         $lineColor = imagecolorallocate($image, 150, 150, 150);
 
         imagefilledrectangle($image, 0, 0, 120, 40, $bgColor);
 
-        imagestring($image, 5, 35, 10, $captchaText, $textColor);
+        imagestring($image, 5, 28, 10, $captcha, $textColor);
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             imageline($image, rand(0, 120), rand(0, 40), rand(0, 120), rand(0, 40), $lineColor);
         }
 
-        header('Content-Type: image/png');
+        ob_start();
         imagepng($image);
-
+        $imageData = ob_get_clean();
 
         imagedestroy($image);
+        return response($imageData)->header('Content-Type', 'image/png');
     }
 
-    public function validateCaptcha(Request $request)
+    public function validate(Request $request)
     {
         $request->validate([
             'captcha' => 'required|string',
+            'token' => 'required|string'
         ]);
 
-        if ($request->captcha === Session::get('captcha')) {
-            return response()->json(['message' => 'CAPTCHA validated successfully!']);
+        if ($request->captcha ===  Cache::get($request->token)) {
+            Cache::forget($request->token);
+            return $this->success(['message' => 'CAPTCHA validated successfully']);
         } else {
-            return response()->json(['message' => 'CAPTCHA validation failed.'], 422);
+            return $this->unprocess('CAPTCHA validation failed');
         }
     }
 }
