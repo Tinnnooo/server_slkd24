@@ -6,7 +6,6 @@ use App\Exceptions\NotFoundException;
 use App\Exceptions\ServerBusyException;
 use App\HasUploadImage;
 use App\Models\Blog;
-use App\Models\BlogComment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -38,12 +37,12 @@ class BlogService
         }
     }
 
-    public function getComments(int $id): BlogComment
+    public function getComments(int $id)
     {
         $blog = Blog::find($id);
 
         if (!$blog) throw new NotFoundException();
 
-        return $blog->comments();
+        return $blog->comments;
     }
 }

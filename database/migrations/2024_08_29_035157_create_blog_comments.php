@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('subject');
             $table->string('website');
             $table->string('comment');
-            $table->string('captcha');
+            $table->foreignId('blog_id');
             $table->timestamps();
         });
     }
