@@ -10,9 +10,9 @@ class Banner extends Model
 {
     use HasFactory;
 
-    protected $guard = false;
+    protected $guarded = [];
 
-    protected $casts = [
-        'status' => BannerStatus::class,
-    ];
+    // protected $casts = [
+    //     'status' => BannerStatus::class,
+    // ];
 }
