@@ -54,7 +54,7 @@ class AuthController extends Controller
         $user['token'] = $user->createToken('access_token')->plainTextToken;
         Auth::login($user);
 
-        return $this->success(['message' => 'User create success.', 'data' => new UserResource($user)]);
+        return $this->success(['message' => 'User create success.', 'data' => new UserResource($user)], 201);
     }
 
     public function login(LoginRequest $request)

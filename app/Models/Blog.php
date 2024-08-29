@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Blog extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'image',
+        'title',
+        'description',
+        'author_id',
+        'tags',
+    ];
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(BlogComment::class);
+    }
+}
