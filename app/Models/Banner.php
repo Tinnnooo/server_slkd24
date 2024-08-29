@@ -12,7 +12,11 @@ class Banner extends Model
 
     protected $guarded = [];
 
-    // protected $casts = [
-    //     'status' => BannerStatus::class,
-    // ];
+    protected $casts = [
+        'status' => BannerStatus::class,
+    ];
+
+    protected $hidden = [
+        'id',
+    ];
 }

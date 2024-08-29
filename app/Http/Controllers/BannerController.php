@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\CreateBannerRequest;
 use App\Http\Resources\BannerCollection;
 use App\Http\Resources\BannerResource;
@@ -29,6 +30,29 @@ class BannerController extends Controller
 
         $banner = Banner::create($validated);
 
-        return $this->success(['message' => 'Banner created successfully', 'data' => new BannerResource($banner)]);
+        return $this->success(['message' => 'Banner created successfully', 'data' => new BannerResource($banner)], 201);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $banner = Banner::find($id);
+
+        if (!$banner) throw new NotFoundException();
+
+        $banner->update($request->all());
+        $banner->save();
+
+        return $this->success(['message' => 'Banner updated successfully', 'data' => new BannerResource($banner)]);
+    }
+
+    public function delete(int $id)
+    {
+        $banner = Banner::find($id);
+
+        if (!$banner) throw new NotFoundException();
+
+        $banner->delete();
+
+        return $this->success(['message' => 'Banner deleted successfully']);
     }
 }

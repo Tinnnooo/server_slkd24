@@ -33,6 +33,8 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
 
     Route::get('/banner', [BannerController::class, 'get']);
     Route::post('/banner', [BannerController::class, 'create']);
+    Route::put('/banner/{id}', [BannerController::class, 'update']);
+    Route::delete('/banner/{id}', [BannerController::class, 'delete']);
 
     Route::post('/blog', [BlogController::class, 'create']);
 });
