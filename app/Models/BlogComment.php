@@ -18,6 +18,7 @@ class BlogComment extends Model
         'comment',
         'captcha',
         'blog_id',
+        'user_id',
     ];
 
     protected $hidden = [
@@ -28,5 +29,10 @@ class BlogComment extends Model
     public function blog(): BelongsTo
     {
         return $this->belongsTo(Blog::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

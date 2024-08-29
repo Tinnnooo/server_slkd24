@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('comment');
             $table->string('captcha');
             $table->foreignId('blog_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

@@ -49,7 +49,9 @@ class BlogService
                 'subject' => $validated['subject'],
                 'website' => $validated['website'],
                 'comment' => $validated['comment'],
+                'captcha' => $validated['captcha'],
                 'blog_id' => $id,
+                'user_id' => Auth::user()->id,
             ]);
 
             DB::commit();
