@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\HasResponseHttp;
+use App\Traits\HasResponseHttp;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

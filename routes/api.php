@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\UserController;
@@ -29,5 +30,9 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
+
+    Route::get('/banner', [BannerController::class, 'get']);
+    Route::post('/banner', [BannerController::class, 'create']);
+
     Route::post('/blog', [BlogController::class, 'create']);
 });

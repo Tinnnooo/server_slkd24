@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ServerBusyException;
-use App\HasResponseHttp;
-use App\HasToken;
-use App\HasUploadImage;
+use App\Traits\HasResponseHttp;
+use App\Traits\HasToken;
+use App\Traits\HasUploadImage;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\UserResource;

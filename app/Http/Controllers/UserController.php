@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\HasResponseHttp;
-use App\HasUploadImage;
+use App\Traits\HasResponseHttp;
+use App\Traits\HasUploadImage;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;

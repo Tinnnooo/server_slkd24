@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\HasResponseHttp;
+use App\Traits\HasResponseHttp;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\CreateBlogRequest;
 use App\Http\Requests\CreateCommentRequest;

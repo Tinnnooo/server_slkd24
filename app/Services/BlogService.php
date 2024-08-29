@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\NotFoundException;
 use App\Exceptions\ServerBusyException;
-use App\HasUploadImage;
+use App\Traits\HasUploadImage;
 use App\Models\Blog;
 use App\Models\BlogComment;
 use Illuminate\Support\Facades\Auth;
