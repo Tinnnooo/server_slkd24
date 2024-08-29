@@ -65,6 +65,6 @@ class AuthController extends Controller
             return $this->failedLogin();
         }
 
-        return 's';
+        return $this->success(['message' => 'Login success.', 'token' => Auth::user()->createToken('access_token')->plainTextToken]);
     }
 }
