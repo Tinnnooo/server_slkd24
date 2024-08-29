@@ -19,6 +19,11 @@ class BlogComment extends Model
         'blog_id',
     ];
 
+    protected $hidden = [
+        'blog_id',
+        'id',
+    ];
+
     public function blog(): BelongsTo
     {
         return $this->belongsTo(Blog::class);

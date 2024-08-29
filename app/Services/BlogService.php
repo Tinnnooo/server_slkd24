@@ -6,6 +6,7 @@ use App\Exceptions\NotFoundException;
 use App\Exceptions\ServerBusyException;
 use App\HasUploadImage;
 use App\Models\Blog;
+use App\Models\BlogComment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -31,6 +32,29 @@ class BlogService
             DB::commit();
 
             return $blog;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new ServerBusyException();
+        }
+    }
+
+    public function storeComment(array $validated, int $id): BlogComment
+    {
+        DB::beginTransaction();
+
+        try {
+            $blogComment = BlogComment::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'subject' => $validated['subject'],
+                'website' => $validated['website'],
+                'comment' => $validated['comment'],
+                'blog_id' => $id,
+            ]);
+
+            DB::commit();
+
+            return $blogComment;
         } catch (\Exception $e) {
             DB::rollBack();
             throw new ServerBusyException();

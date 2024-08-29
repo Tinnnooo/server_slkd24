@@ -15,10 +15,14 @@ Route::prefix('v1')->group(function () {
 Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
     Route::get('/me', [UserController::class, 'me']);
+
     Route::get('/comments/{id}', [BlogController::class, 'getComments']);
-    Route::post('/comment/{id}', [BlogController::class, 'createComments']);
+
+    Route::post('/comment/{id}', [BlogController::class, 'createComment']);
+    Route::put('/comment/{id}', [BlogController::class, 'updateComment']);
+    // Route::delete('/comment/{id}', [BlogController::class, 'deleteComment']);
 });
 
-Route::middleware(['json', 'auth:sanctum', 'admin'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
     Route::post('/blog', [BlogController::class, 'create']);
 });
