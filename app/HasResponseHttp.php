@@ -12,4 +12,11 @@ trait HasResponseHttp
             $data,
         ], $code);
     }
+
+    public function failedLogin(): JsonResponse
+    {
+        return response()->json([
+            'message' => 'Wrong username or password',
+        ], 401);
+    }
 }

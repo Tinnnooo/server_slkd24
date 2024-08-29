@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ServerBusyException;
 use App\HasResponseHttp;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
@@ -54,5 +55,16 @@ class AuthController extends Controller
         Auth::login($user);
 
         return $this->success(['message' => 'User create success.', 'data' => new UserResource($user)]);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $validated = $request->validated();
+
+        if (!Auth::once($validated)) {
+            return $this->failedLogin();
+        }
+
+        return 's';
     }
 }
