@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ServerBusyException;
 use App\HasResponseHttp;
 use App\Http\Requests\RegistrationRequest;
+use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,10 +47,12 @@ class AuthController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            return new ServerBusyException();
         }
 
+        $user['token'] = $user->createToken('access_token')->plainTextToken;
+        Auth::login($user);
 
-
-        return $this->success($user);
+        return $this->success(['message' => 'User create success.', 'data' => new UserResource($user)]);
     }
 }
