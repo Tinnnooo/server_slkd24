@@ -19,4 +19,11 @@ trait HasResponseHttp
             'message' => 'Wrong username or password',
         ], 401);
     }
+
+    public function notFound(): JsonResponse
+    {
+        return response()->json([
+            'message' => 'Not found.',
+        ], 404);
+    }
 }

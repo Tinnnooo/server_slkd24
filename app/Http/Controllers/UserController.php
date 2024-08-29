@@ -35,14 +35,15 @@ class UserController extends Controller
         return $this->success(['message' => 'Updated profile successfully.']);
     }
 
-    // public function getProfile()
-    // {
-    //     $user = Auth::user();
-    //     $profilePicturePath = $user->profile_picture;
+    public function getProfile()
+    {
+        $user = Auth::user();
+        $profilePicturePath = $user->profile_picture;
 
-    //     if (!Storage::disk('public')->exists($profilePicturePath)) {
+        if (!Storage::disk('public')->exists($profilePicturePath)) {
+            return $this->notFound();
+        }
 
-    //     }
-    //     return response()->file(Storage::disk('public')->path($profilePicturePath));
-    // }
+        return response()->file(Storage::disk('public')->path($profilePicturePath));
+    }
 }

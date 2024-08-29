@@ -11,7 +11,7 @@ Route::prefix('v1')->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
     Route::get('/get-profile', [UserController::class, 'getProfile']);
 });
