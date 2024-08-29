@@ -20,7 +20,7 @@ Route::prefix('v1')->group(function () {
 
 
 Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
-    Route::post('/update-profile', [UserController::class, 'updateProfile']);
+    Route::post('/me/update-profile', [UserController::class, 'updateProfile']);
     Route::get('/me', [UserController::class, 'me']);
 
     Route::get('/comments/{id}', [BlogController::class, 'getComments']);
@@ -47,10 +47,8 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
     Route::put('/portfolios/{id}', [PortfolioController::class, 'update']);
     Route::delete('/portfolios/{id}', [PortfolioController::class, 'delete']);
 
-    // Route::get('/portfolio', [PortfolioController::class, 'get']);
+    Route::get('/users', [UserController::class, 'get']);
     Route::post('/users', [UserController::class, 'create']);
-    // Route::put('/portfolio/{id}', [PortfolioController::class, 'update']);
-    // Route::delete('/portfolio/{id}', [PortfolioController::class, 'delete']);
-
-
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'delete']);
 });

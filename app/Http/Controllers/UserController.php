@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\RegistrationRequest;
+use App\Http\Resources\UserCollection;
 use App\Traits\HasResponseHttp;
 use App\Traits\HasUploadImage;
 use App\Http\Resources\UserResource;
@@ -24,6 +26,11 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
+    public function get()
+    {
+        return $this->success(['data' => new UserCollection(User::all())]);
+    }
+
     public function create(RegistrationRequest $request)
     {
         $validated = $request->validated();
@@ -35,6 +42,29 @@ class UserController extends Controller
         $data = User::create($validated);
 
         return $this->success(['message' => 'User created successfully', 'data' => new UserResource($data)], 201);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) throw new NotFoundException();
+
+        $user->update($request->all());
+        $user->save();
+
+        return $this->success(['message' => 'User updated successfully', 'data' => new UserResource($user)]);
+    }
+
+    public function delete(int $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) throw new NotFoundException();
+
+        $user->delete();
+
+        return $this->success(['message' => 'User deleted successfully']);
     }
 
     public function updateProfile(Request $request)

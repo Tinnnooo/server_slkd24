@@ -29,26 +29,14 @@ class AuthController extends Controller
 
         $imagePath = $this->saveImage($profile_picture, 'user_profiles');
 
-        DB::beginTransaction();
-        try {
-            $user = User::create([
-                'name' => $validated['name'],
-                'username' => $validated['username'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'date_of_birth' => $validated['date_of_birth'],
-                'phone_number' => $validated['phone_number'],
-                'profile_picture' => $imagePath,
-            ]);
+        $imagePath = $this->saveImage($validated['profile_picture'], 'user_profiles');
+        $validated['profile_picture'] = $imagePath;
+        $validated['password'] = Hash::make($validated['password']);
 
-            $role = Role::find(99);
-            $user->roles()->attach($role);
+        $user = User::create($validated);
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new ServerBusyException();
-        }
+        $role = Role::find(99);
+        $user->roles()->attach($role);
 
         Auth::login($user);
 
