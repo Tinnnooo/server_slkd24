@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CaptchaController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,20 +25,32 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
 
     Route::get('/comments/{id}', [BlogController::class, 'getComments']);
 
-    Route::post('/comment/{id}', [BlogController::class, 'createComment']);
-    Route::put('/comment/{id}', [BlogController::class, 'updateComment']);
-    Route::delete('/comment/{id}', [BlogController::class, 'deleteComment']);
+    Route::post('/comments/{id}', [BlogController::class, 'createComment']);
+    Route::put('/comments/{id}', [BlogController::class, 'updateComment']);
+    Route::delete('/comments/{id}', [BlogController::class, 'deleteComment']);
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
 
-    Route::get('/banner', [BannerController::class, 'get']);
-    Route::post('/banner', [BannerController::class, 'create']);
-    Route::put('/banner/{id}', [BannerController::class, 'update']);
-    Route::delete('/banner/{id}', [BannerController::class, 'delete']);
+    Route::get('/banners', [BannerController::class, 'get']);
+    Route::post('/banners', [BannerController::class, 'create']);
+    Route::put('/banners/{id}', [BannerController::class, 'update']);
+    Route::delete('/banners/{id}', [BannerController::class, 'delete']);
 
-    Route::get('/blog', [BlogController::class, 'get']);
-    Route::post('/blog', [BlogController::class, 'create']);
-    Route::put('/blog/{id}', [BlogController::class, 'update']);
-    Route::delete('/blog/{id}', [BlogController::class, 'delete']);
+    Route::get('/blogs', [BlogController::class, 'get']);
+    Route::post('/blogs', [BlogController::class, 'create']);
+    Route::put('/blogs/{id}', [BlogController::class, 'update']);
+    Route::delete('/blogs/{id}', [BlogController::class, 'delete']);
+
+    Route::get('/portfolios', [PortfolioController::class, 'get']);
+    Route::post('/portfolios', [PortfolioController::class, 'create']);
+    Route::put('/portfolios/{id}', [PortfolioController::class, 'update']);
+    Route::delete('/portfolios/{id}', [PortfolioController::class, 'delete']);
+
+    // Route::get('/portfolio', [PortfolioController::class, 'get']);
+    Route::post('/users', [UserController::class, 'create']);
+    // Route::put('/portfolio/{id}', [PortfolioController::class, 'update']);
+    // Route::delete('/portfolio/{id}', [PortfolioController::class, 'delete']);
+
+
 });

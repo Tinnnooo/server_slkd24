@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
+use App\Http\Requests\CreatePortfolioRequest;
 use App\Http\Resources\PortfolioCollection;
 use App\Http\Resources\PortfolioResource;
 use App\Models\Portfolio;
 use App\Traits\HasResponseHttp;
 use App\Traits\HasUploadImage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PortfolioController extends Controller
 {
@@ -19,13 +22,18 @@ class PortfolioController extends Controller
         return $this->success(['data' => new PortfolioCollection(Portfolio::all())]);
     }
 
-    public function create(CreateBlogRequest $request): JsonResponse
+    public function create(CreatePortfolioRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
-        $data = $this->blogService->store($validated);
+        $image = $this->saveImage($validated['image'], 'portfolio_images');
 
-        return $this->success(['data' => new BlogResource($data)]);
+        $validated['image'] = $image;
+        $validated['author_id'] = Auth::user()->id;
+
+        $data = Portfolio::create($validated);
+
+        return $this->success(['data' => new PortfolioResource($data)]);
     }
 
     public function update(Request $request, int $id)
