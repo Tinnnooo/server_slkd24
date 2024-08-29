@@ -7,23 +7,64 @@ use App\Traits\HasResponseHttp;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\CreateBlogRequest;
 use App\Http\Requests\CreateCommentRequest;
+use App\Http\Resources\BlogCollection;
 use App\Http\Resources\BlogCommentCollection;
 use App\Http\Resources\BlogCommentResource;
 use App\Http\Resources\BlogResource;
+use App\Models\Blog;
 use App\Models\BlogComment;
 use App\Services\BlogService;
+use App\Traits\HasUploadImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    use HasResponseHttp;
+    use HasResponseHttp, HasUploadImage;
 
     protected $blogService;
 
     public function __construct(BlogService $blogService)
     {
         $this->blogService = $blogService;
+    }
+
+    public function get()
+    {
+        return $this->success(['data' => new BlogCollection(Blog::all())]);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $blog = Blog::find($id);
+
+        $data = $request->all();
+
+        if (!$blog) throw new NotFoundException();
+
+        if ($request->hasFile('image')) {
+            $this->deleteImage($blog->image);
+
+            $newImage = $this->saveImage($request['image'], 'blog_images');
+
+            $data['image'] = $newImage;
+        }
+
+        $blog->update($data);
+        $blog->save();
+
+        return $this->success(['message' => 'Blog updated successfully', 'data' => new BlogResource($blog)]);
+    }
+
+    public function delete(int $id)
+    {
+        $blog = Blog::find($id);
+
+        if (!$blog) throw new NotFoundException();
+
+        $blog->delete();
+
+        return $this->success(['message' => 'Blog deleted successfully']);
     }
 
     public function create(CreateBlogRequest $request): JsonResponse

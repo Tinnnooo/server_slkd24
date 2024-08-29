@@ -19,6 +19,10 @@ class Blog extends Model
         'author_id',
     ];
 
+    protected $casts = [
+        'tags' => 'array',
+    ];
+
     public function comments(): HasMany
     {
         return $this->hasMany(BlogComment::class);

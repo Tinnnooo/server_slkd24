@@ -26,7 +26,9 @@ class UserController extends Controller
         if ($request->hasFile('profile_picture')) {
             $user = Auth::user();
 
-            $this->deleteImage($user);
+            if ($user->profile_picture) {
+                $this->deleteImage($user->profile_picture);
+            }
 
             $newProfilePath = $this->saveImage($request->file('profile_picture'), 'user_profiles');
 

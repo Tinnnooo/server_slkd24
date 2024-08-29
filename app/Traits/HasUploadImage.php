@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,14 +17,10 @@ trait HasUploadImage
         return $folderName . '/' . $imageName;
     }
 
-    public function deleteImage($user): void
+    public function deleteImage(string $path): void
     {
-        if ($user->profile_picture) {
-            $filePath = $user->profile_picture;
-
-            if (Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
-            }
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
     }
 }
