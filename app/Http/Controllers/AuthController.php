@@ -28,7 +28,7 @@ class AuthController extends Controller
         $imageName = time() . '_' . $profile_picture->getClientOriginalName();
         $profile_picture->storeAs('public/user_profiles', $imageName);
 
-        $imagePath = 'storage/user_profiles' . $imageName;
+        $imagePath = 'user_profiles/' . $imageName;
 
         DB::beginTransaction();
         try {
@@ -42,7 +42,7 @@ class AuthController extends Controller
                 'profile_picture' => $imagePath,
             ]);
 
-            $role = Role::find(1);
+            $role = Role::find(99);
             $user->roles()->attach($role);
 
             DB::commit();
