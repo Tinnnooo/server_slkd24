@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\HasResponseHttp;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\CreateBlogRequest;
@@ -50,11 +51,24 @@ class BlogController extends Controller
 
     public function updateComment(Request $request, int $id)
     {
-        $comment = BlogComment::findOrFail($id);
+        $comment = BlogComment::find($id);
+
+        if (!$comment) throw new NotFoundException();
 
         $comment->update($request->all());
         $comment->save();
 
         return $this->success(['message' => 'Comment updated successfully', 'data' => new BlogCommentResource($comment)]);
+    }
+
+    public function deleteComment(int $id)
+    {
+        $comment = BlogComment::find($id);
+
+        if (!$comment) throw new NotFoundException();
+
+        $comment->delete();
+
+        return $this->success(['message' => 'Comment deleted successfully']);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,9 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
 
     Route::post('/comment/{id}', [BlogController::class, 'createComment']);
     Route::put('/comment/{id}', [BlogController::class, 'updateComment']);
-    // Route::delete('/comment/{id}', [BlogController::class, 'deleteComment']);
+    Route::delete('/comment/{id}', [BlogController::class, 'deleteComment']);
+
+    Route::get('/captcha', [CaptchaController::class, 'generateCaptcha']);
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {

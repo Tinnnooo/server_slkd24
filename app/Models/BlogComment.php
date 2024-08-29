@@ -16,6 +16,7 @@ class BlogComment extends Model
         'subject',
         'website',
         'comment',
+        'captcha',
         'blog_id',
     ];
 
