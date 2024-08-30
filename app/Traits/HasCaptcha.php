@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 trait HasCaptcha
 {
-    public function verifyCaptcha(FormRequest $request)
+    public function verifyCaptcha($request)
     {
         $request->validate([
             'captcha' => 'required|string',
