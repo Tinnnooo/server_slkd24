@@ -50,7 +50,13 @@ class UserController extends Controller
 
         if (!$user) throw new NotFoundException();
 
-        $user->update($request->all());
+        $data = $request->all();
+
+        if ($request['password']) {
+            $data['password'] = Hash::make($request['password']);
+        }
+
+        $user->update($data);
         $user->save();
 
         return $this->success(['message' => 'User updated successfully', 'data' => new UserResource($user)]);
