@@ -16,6 +16,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/captcha/requestToken', [CaptchaController::class, 'requestToken']);
     Route::get('/captcha/{token}', [CaptchaController::class, 'generate']);
     Route::post('/captcha/verify', [CaptchaController::class, 'validate']);
+
+    Route::get('/banners', [BannerController::class, 'get']);
 });
 
 
@@ -31,8 +33,6 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
-
-    Route::get('/banners', [BannerController::class, 'get']);
     Route::post('/banners', [BannerController::class, 'create']);
     Route::put('/banners/{id}', [BannerController::class, 'update']);
     Route::delete('/banners/{id}', [BannerController::class, 'delete']);
