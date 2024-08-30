@@ -28,6 +28,7 @@ class CommentRequest extends FormRequest
             'website' => ['required'],
             'comment' => ['required'],
             'captcha' => ['required'],
+            'token' => ['required'],
         ];
     }
 }

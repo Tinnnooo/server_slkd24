@@ -14,13 +14,14 @@ use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use App\Models\BlogComment;
 use App\Services\BlogService;
+use App\Traits\HasCaptcha;
 use App\Traits\HasUploadImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    use HasResponseHttp, HasUploadImage;
+    use HasResponseHttp, HasUploadImage, HasCaptcha;
 
     protected $blogService;
 
@@ -93,6 +94,9 @@ class BlogController extends Controller
 
     public function createComment(CommentRequest $request, int $id)
     {
+        if (!$this->verifyCaptcha($request)) {
+            return $this->unprocess('CAPTCHA is invalid');
+        }
         $validated = $request->validated();
 
         $data = $this->blogService->storeComment($validated, $id);
