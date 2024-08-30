@@ -34,6 +34,16 @@ class BlogController extends Controller
         return $this->success(new BlogCollection(Blog::all()));
     }
 
+    public function detail(int $id)
+    {
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            throw new NotFoundException();
+        }
+        return $this->success(new BlogResource($blog));
+    }
+
     public function update(Request $request, int $id)
     {
         $blog = Blog::find($id);
