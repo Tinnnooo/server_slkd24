@@ -88,7 +88,7 @@ class BlogController extends Controller
 
     public function getComments(int $id): JsonResponse
     {
-        return $this->success(['data' => new BlogCommentCollection($this->blogService->getComments($id))]);
+        return $this->success(['comments' => new BlogCommentCollection($this->blogService->getComments($id))]);
     }
 
     public function createComment(CommentRequest $request, int $id)
