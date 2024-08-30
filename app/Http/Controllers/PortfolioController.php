@@ -19,7 +19,7 @@ class PortfolioController extends Controller
 
     public function get()
     {
-        return $this->success(new PortfolioCollection(Portfolio::all()));
+        return $this->success(['portfolios' => new PortfolioCollection(Portfolio::all())]);
     }
 
     public function create(CreatePortfolioRequest $request): JsonResponse
