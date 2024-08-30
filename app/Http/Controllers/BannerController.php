@@ -17,7 +17,7 @@ class BannerController extends Controller
 
     public function get()
     {
-        return $this->success(new BannerCollection(Banner::all()));
+        return $this->success(['banners' => new BannerCollection(Banner::all())]);
     }
 
     public function create(CreateBannerRequest $request)
