@@ -12,6 +12,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\UserService;
+use App\Traits\HasCaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,11 +20,16 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    use HasResponseHttp, HasUploadImage, HasToken;
+    use HasResponseHttp, HasUploadImage, HasToken, HasCaptcha;
 
     public function register(RegistrationRequest $request)
     {
+        if (!$this->verifyCaptcha($request)) {
+            return $this->unprocess('CAPTCHA is not valid.');
+        };
+
         $validated = $request->validated();
+
 
         $profile_picture = $validated['profile_picture'];
 

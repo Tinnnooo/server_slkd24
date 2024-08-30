@@ -29,6 +29,8 @@ class RegistrationRequest extends FormRequest
             'date_of_birth' => ['required'],
             'phone_number' => ['required'],
             'profile_picture' => ['required', 'image', 'mimes:jpg,png,jpeg'],
+            'captcha' => 'nullable',
+            'token' => 'nullable'
         ];
     }
 }
