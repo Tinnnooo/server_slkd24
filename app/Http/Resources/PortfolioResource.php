@@ -24,7 +24,8 @@ class PortfolioResource extends JsonResource
                 'email' => $this->author->email,
                 'phone_number' => $this->author->phone_number,
                 'profile_picture' => $this->author->profile_picture,
-            ]
+            ],
+            'created_at' => $this->created_at
         ];
     }
 }
