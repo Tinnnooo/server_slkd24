@@ -31,7 +31,7 @@ class BlogController extends Controller
 
     public function get()
     {
-        return $this->success(['data' => new BlogCollection(Blog::all())]);
+        return $this->success(new BlogCollection(Blog::all()));
     }
 
     public function update(Request $request, int $id)

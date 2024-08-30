@@ -18,6 +18,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/captcha/verify', [CaptchaController::class, 'validate']);
 
     Route::get('/banners', [BannerController::class, 'get']);
+
+    Route::get('/blogs', [BlogController::class, 'get']);
+    Route::get('/portfolios', [PortfolioController::class, 'get']);
+    Route::get('/comments/{id}', [BlogController::class, 'getComments']);
 });
 
 
@@ -25,7 +29,6 @@ Route::middleware(['auth:sanctum',])->prefix('v1')->group(function () {
     Route::post('/me/update-profile', [UserController::class, 'updateProfile']);
     Route::get('/me', [UserController::class, 'me']);
 
-    Route::get('/comments/{id}', [BlogController::class, 'getComments']);
 
     Route::post('/comments/{id}', [BlogController::class, 'createComment']);
     Route::put('/comments/{id}', [BlogController::class, 'updateComment']);
@@ -37,12 +40,10 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('v1')->group(function () {
     Route::put('/banners/{id}', [BannerController::class, 'update']);
     Route::delete('/banners/{id}', [BannerController::class, 'delete']);
 
-    Route::get('/blogs', [BlogController::class, 'get']);
     Route::post('/blogs', [BlogController::class, 'create']);
     Route::put('/blogs/{id}', [BlogController::class, 'update']);
     Route::delete('/blogs/{id}', [BlogController::class, 'delete']);
 
-    Route::get('/portfolios', [PortfolioController::class, 'get']);
     Route::post('/portfolios', [PortfolioController::class, 'create']);
     Route::put('/portfolios/{id}', [PortfolioController::class, 'update']);
     Route::delete('/portfolios/{id}', [PortfolioController::class, 'delete']);
