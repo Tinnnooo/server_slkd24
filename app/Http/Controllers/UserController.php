@@ -28,7 +28,7 @@ class UserController extends Controller
 
     public function get()
     {
-        return $this->success(['data' => new UserCollection(User::all())]);
+        return $this->success(['users' => new UserCollection(User::all())]);
     }
 
     public function create(RegistrationRequest $request)
@@ -88,6 +88,6 @@ class UserController extends Controller
     public function me()
     {
 
-        return $this->success([new UserResource(Auth::user())]);
+        return $this->success(['user' => new UserResource(Auth::user())]);
     }
 }
