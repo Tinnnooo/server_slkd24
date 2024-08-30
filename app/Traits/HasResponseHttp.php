@@ -8,9 +8,10 @@ trait HasResponseHttp
 {
     public function success($data, int $code = 200): JsonResponse
     {
-        return response()->json([
+        return response()->json(
             $data,
-        ], $code);
+            $code
+        );
     }
 
     public function failedLogin(): JsonResponse
