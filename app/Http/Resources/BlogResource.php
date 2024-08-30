@@ -26,6 +26,7 @@ class BlogResource extends JsonResource
                 'phone_number' => $this->author->phone_number,
                 'profile_picture' => $this->author->profile_picture,
             ],
+            'comments' => $this->comments,
             'created_at' => $this->created_at,
         ];
     }
