@@ -37,7 +37,17 @@ class BannerController extends Controller
     {
         $banner = Banner::find($id);
 
+        $data = $request->all();
+
         if (!$banner) throw new NotFoundException();
+
+        if ($request->hasFile('image')) {
+            $this->deleteImage($banner->image);
+
+            $newImage = $this->saveImage($request['image'], 'banner_images');
+
+            $data['image'] = $newImage;
+        }
 
         $banner->update($request->all());
         $banner->save();
