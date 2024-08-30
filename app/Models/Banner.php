@@ -20,8 +20,4 @@ class Banner extends Model
     protected $casts = [
         'status' => BannerStatus::class,
     ];
-
-    protected $hidden = [
-        'id',
-    ];
 }
