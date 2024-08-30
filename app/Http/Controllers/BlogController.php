@@ -31,7 +31,7 @@ class BlogController extends Controller
 
     public function get()
     {
-        return $this->success(new BlogCollection(Blog::all()));
+        return $this->success(['blogs' => new BlogCollection(Blog::all())]);
     }
 
     public function detail(int $id)
