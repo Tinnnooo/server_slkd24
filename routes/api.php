@@ -21,7 +21,9 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/blogs', [BlogController::class, 'get']);
     Route::get('/blogs/{id}', [BlogController::class, 'detail']);
+
     Route::get('/portfolios', [PortfolioController::class, 'get']);
+
     Route::get('/comments/{id}', [BlogController::class, 'getComments']);
 });
 

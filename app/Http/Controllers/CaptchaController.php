@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
+use App\Traits\HasCaptcha;
 use App\Traits\HasResponseHttp;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class CaptchaController extends Controller
 {
-    use HasResponseHttp;
+    use HasResponseHttp, HasCaptcha;
 
     public function requestToken()
     {
@@ -54,16 +55,10 @@ class CaptchaController extends Controller
 
     public function validate(Request $request)
     {
-        $request->validate([
-            'captcha' => 'required|string',
-            'token' => 'required|string'
-        ]);
-
-        if ($request->captcha ===  Cache::get($request->token)) {
-            Cache::forget($request->token);
-            return $this->success(['message' => 'CAPTCHA validated successfully']);
-        } else {
+        if (!$this->verifyCaptcha($request)) {
             return $this->unprocess('CAPTCHA validation failed');
-        }
+        };
+
+        return $this->success(['message' => 'CAPTCHA validated successfully']);
     }
 }
