@@ -49,7 +49,7 @@ class BannerController extends Controller
             $data['image'] = $newImage;
         }
 
-        $banner->update($request->all());
+        $banner->update($data);
         $banner->save();
 
         return $this->success(['message' => 'Banner updated successfully', 'data' => new BannerResource($banner)]);
