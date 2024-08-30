@@ -83,7 +83,7 @@ class BlogController extends Controller
 
         $data = $this->blogService->store($validated);
 
-        return $this->success(['data' => new BlogResource($data)]);
+        return $this->success(['message' => 'Blog created successfully', 'data' => new BlogResource($data)]);
     }
 
     public function getComments(int $id): JsonResponse
